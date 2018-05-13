@@ -30,15 +30,14 @@ def about(request):
        
 
 
-def records (request):
-    pass
-
-'''
+#def records (request):
+#    pass
+#
 def records(request):
     weather_1 = Temperature(
                             temperature=random.randint(20,40), 
                             max_temp=random.randint(30,40), 
-                            min_temp=random.randint(20,30)
+                            min_temp=random.randint(20,30),
                            )
     weather_2 = Temperature(
                             temperature=random.randint(20,40), 
@@ -61,11 +60,10 @@ def records(request):
     }
 
     return render(request, 'weather.html', context) 
-'''   
 
 def iris(request):
    from subprocess import call
-   status = call(["/anaconda/bin/python", "/Users/sopanshewale/lychee/lychee/scripts/plot_iris_dataset.py"])
+   status = call(["/anaconda/bin/python", "/UUsers/sopanshewale/lychee/lychee/scripts/plot_iris_dataset.py"])
    if status == 0:
       return render(request, 'iris_success.html')
    else: 
@@ -98,9 +96,17 @@ def year_archive(request, year=None):
     print ("I can use this variable anywhere")
     return render(request, 'index.html')
 
-def month_archive (request):
+def month_archive (request, year=None, month=None):
     pass
 
 def article_detail(request):
     pass
 
+def calculate(request):
+    if request.method == 'GET':
+         return render(request, 'calculator.html') 
+    else:
+         m = int(request.POST['firstnumber']) 
+         n =  int(request.POST['secondnumber']) 
+         sum = m + n
+         return render(request, 'calculator.html', {'sumation': sum, 'first': m, 'second': n}) 

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+{% block content %}
+
+<h1> My Calculator </h1>
+
+The sum of {{ first }} and {{ second }} : {{ sumation }} 
+
+<hr>
+
+<form name="myform", method="POST">
+ {% csrf_token %}
+
+
+  First Number:<br>
+  <input type="text" name="firstnumber"><br>
+  Second Number:<br>
+  <input type="text" name="secondnumber">
+   <input type="submit" value="Submit">
+
+</form>
+
+
+{% endblock %}

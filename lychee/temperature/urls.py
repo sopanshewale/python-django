@@ -5,6 +5,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('records/', views.records, name='record'),
     path('iris/', views.iris, name='iris'),
+    path('calculator/', views.calculate, name='sample_cal'),
     path('simple_upload/', views.simple_upload, name='file_upload'),
     path('trecords2003/', views.special_case_2003),
     re_path(r'^trecords/(?P<year>[0-9]{4})/$', views.year_archive),
