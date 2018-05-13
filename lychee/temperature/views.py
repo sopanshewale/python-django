@@ -1,14 +1,39 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from temperature.Temperature import Temperature
+#from temperature.Temperature import Temperature
+from temperature.models import Temperature
+from temperature.forms import TemperatureForm
 import random
+from django.core.files.storage import FileSystemStorage
+from temperature.forms import UploadFileForm
+from django.conf import settings
+ 
+
+
+
 
 def index(request):
     return render(request, 'index.html')
 
 def about(request):
-    return HttpResponse("The Web Application is owned by Data Science Folks at Aegis")
+    temp_form = TemperatureForm()
 
+    if request.method == 'GET':
+       records = Temperature.objects.all()
+       return render(request, 'about.html', {'temp_form': temp_form, 'records': records, }) 
+    elif request.method == 'POST':
+       form  = TemperatureForm (request.POST)
+       print (form) 
+       if form.is_valid():
+          form.save()
+       return render(request, 'about.html', {'temp_form': temp_form }) 
+       
+
+
+def records (request):
+    pass
+
+'''
 def records(request):
     weather_1 = Temperature(
                             temperature=random.randint(20,40), 
@@ -36,4 +61,46 @@ def records(request):
     }
 
     return render(request, 'weather.html', context) 
+'''   
+
+def iris(request):
+   from subprocess import call
+   status = call(["/anaconda/bin/python", "/Users/sopanshewale/lychee/lychee/scripts/plot_iris_dataset.py"])
+   if status == 0:
+      return render(request, 'iris_success.html')
+   else: 
+      return render(request, 'iris_fail.html')
+      
    
+
+
+
+
+def simple_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        path= getattr(settings, 'MEDIA_ROOT')
+        fs = FileSystemStorage(path)
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        return render(request, 'simple_upload.html', {
+            'uploaded_file_url': uploaded_file_url
+        })
+    return render(request, 'simple_upload.html')
+
+
+def special_case_2003(request):
+    return render(request, 'index.html')
+     
+
+def year_archive(request, year=None):
+    print (year)
+    print ("I can use this variable anywhere")
+    return render(request, 'index.html')
+
+def month_archive (request):
+    pass
+
+def article_detail(request):
+    pass
+
